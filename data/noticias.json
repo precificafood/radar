@@ -1,14 +1,14 @@
 {
   "version": 3,
-  "revision": 2,
-  "checkedAt": "2026-10-13T23:17:13+00:00",
+  "revision": 3,
+  "checkedAt": "2026-10-13T23:32:34+00:00",
   "nicheCheckedAt": {
-    "food": "2026-10-13T23:17:13+00:00",
-    "beauty": "2026-10-13T23:17:13+00:00",
-    "car": "2026-10-13T23:17:13+00:00",
-    "shop": "2026-10-13T23:17:13+00:00",
-    "tech": "2026-10-13T23:17:13+00:00",
-    "health": "2026-10-13T23:17:13+00:00"
+    "food": "2026-10-13T23:32:34+00:00",
+    "beauty": "2026-10-13T23:32:34+00:00",
+    "car": "2026-10-13T23:32:34+00:00",
+    "shop": "2026-10-13T23:32:34+00:00",
+    "tech": "2026-10-13T23:32:34+00:00",
+    "health": "2026-10-13T23:32:34+00:00"
   },
   "mode": "scheduled-rss",
   "articles": [
@@ -335,17 +335,17 @@
       "auto": true
     },
     {
-      "id": "rss-beauty-76f684325b5468300282c738",
+      "id": "rss-beauty-6b822aef2b54b25c13cfd203",
       "n": "beauty",
-      "title": "Caravanas do Uruguai e de todas as regiões do país marcam presença na 34ª Feira Regional da Beleza",
-      "summary": "Manchete divulgada por Blog Simbora lá?. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
+      "title": "Depilação cresce 34% em agendamentos e lidera crescimento entre serviços no Brasil",
+      "summary": "Manchete divulgada por Portal Revista Kdea 360. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
       "why": "Procure impactos possíveis nos serviços, agendamentos, produtos e expectativas de clientes da sua região.",
       "action": "Converse com clientes ou equipe sobre a relevância dessa novidade antes de adotar uma mudança.",
       "impact": "Investigue se o assunto é relevante para seu salão ou negócio de beleza.",
       "type": "Mercado",
-      "source": "Blog Simbora lá?",
-      "publishedAt": "2026-10-08T15:47:04+00:00",
-      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPMG9walFqS3g5cU5FUjA0M0s3cFlOUUdDbERXbU41STlQQ1B0MzV0N1FVSHJjcDBMdklMMGNReWVLYVJneHhZZzNJX0FSQzdVbnNRTnozUi1QVWQ4SVRVNjg0WUhHeGt0eGpwNTNXbnhIUldydktkRWZIRHRxMEJmREQxdmxfNUJMSDZrT3VFMFo4Tm8xVF9aQndqVlFLZDIxOGs3dUlYUl9jNS1WSkJDbm9xY2pZSjk4TkF4bHNSTGpZdC1Hclc3Q1dR?oc=5",
+      "source": "Portal Revista Kdea 360",
+      "publishedAt": "2026-10-08T17:49:14+00:00",
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQWEpSSHBZX2FzNlJVcXM5WkxLTzljVW5ucTExZkdCYkdVNTNPNUFmTDZsOG1DVm5xQ1FiODQ1UGNJODNaU0VITmQ1N2tybTFaQmxrbC00bmVGNll2cG51UkpRdUZabXlIMEhNck95WWg1dWNjM0pNLV9yOFhIRW1JWFh0Y3lweERnM3VjSDNWTk04d1dFd25za0x4eWd2akNVQ1FMSEotY1hyd0NVdEJSX0VTR3dnZlhuSUVVU1AzRmdZQW8?oc=5",
       "auto": true
     },
     {
