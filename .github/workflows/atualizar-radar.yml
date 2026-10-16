@@ -1,4 +1,4 @@
-name: Radar V3 - Noticias automaticas
+name: Radar V4.1 - Noticias com fotos
 
 on:
   schedule:
@@ -18,11 +18,12 @@ concurrency:
 jobs:
   atualizar-e-publicar:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Baixar o Radar V3
+      - name: Baixar o Radar V4.1
         uses: actions/checkout@v4
         with:
           persist-credentials: true
@@ -38,15 +39,21 @@ jobs:
           mkdir -p scripts data
           cat > scripts/atualizar_noticias.py <<'RADAR_SCRIPT'
           #!/usr/bin/env python3
-          """Atualiza o feed do Radar V3 usando RSS público do Google Notícias.
-
+          """Atualiza o Radar V4.1 com imagens editoriais, quando acessíveis.
+          
           Somente manchetes, fontes, links e datas são extraídos do RSS. O sistema
           não inventa resumos jornalísticos ou declarações atribuídas às fontes.
           Sem bibliotecas externas, API paga, credenciais ou backend permanente.
           """
           from __future__ import annotations
-
+          
+          import base64
           import hashlib
+          import html
+          import ipaddress
+          import threading
+          from concurrent.futures import ThreadPoolExecutor, as_completed
+          from html.parser import HTMLParser
           import json
           import re
           import sys
@@ -55,16 +62,27 @@ jobs:
           from datetime import datetime, timedelta, timezone
           from email.utils import parsedate_to_datetime
           from pathlib import Path
-          from urllib.parse import urlencode, urlparse
+          from urllib.error import HTTPError, URLError
+          from urllib.parse import urlencode, urljoin, urlparse
           from urllib.request import Request, urlopen
           import xml.etree.ElementTree as ET
-
+          
           ROOT = Path(__file__).resolve().parents[1]
           OUTPUT = ROOT / "data" / "noticias.json"
           UTC = timezone.utc
           MAX_PER_NICHE = 12
           MAX_AGE_DAYS = 21
-
+          # Até 5 fotos novas por nicho a cada edição: evita centenas de acessos por dia.
+          MAX_NEW_IMAGES_PER_NICHE = 5
+          IMAGE_WORKERS = 4
+          IMAGE_TIMEOUT = 6
+          IMAGE_SCAN_BYTES = 420_000
+          NEWS_BREAKER = threading.Event()
+          REQUEST_HEADERS = {
+              "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+              "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.7",
+          }
+          
           # Pautas pensadas para negócios brasileiros. Quando uma busca falha, a última
           # edição válida daquele nicho permanece disponível (com data anterior).
           SEARCHES = {
@@ -92,8 +110,28 @@ jobs:
                   ("academias fitness bem estar mercado Brasil negócios when:7d", "Mercado"),
                   ("tendências academias atividade física bem estar Brasil when:7d", "Tendências"),
               ],
+              "marketing": [('marketing digital publicidade redes sociais mercado Brasil negócios when:7d', 'Tendências'), ('anúncios Google Meta marketing marcas Brasil empresas when:7d', 'Ferramentas')],
+              "sales": [('vendas empresas comércio vendas B2B Brasil when:7d', 'Mercado'), ('estratégias conversão atendimento vendas vendedores Brasil when:7d', 'Ferramentas')],
+              "stocks": [('Ibovespa B3 bolsa de valores fechamento ações Brasil when:7d', 'Mercado'), ('bolsa brasileira ações Ibovespa empresas resultados when:7d', 'Tendências')],
+              "dollar": [('dólar real câmbio USD BRL cotação cenário Brasil when:7d', 'Mercado'), ('dólar câmbio juros Fed Banco Central real brasileiro when:7d', 'Tendências')],
+              "economy": [('economia Brasil Selic juros Banco Central inflação IPCA Copom when:7d', 'Mercado'), ('PIB Ibovespa juros taxa Selic inflação economia Brasil when:7d', 'Tendências')],
+              "entrepreneur": [('empreendedorismo MEI Sebrae pequenos negócios Brasil when:7d', 'Oportunidades'), ('empreendedores empresas abertura negócios gestão Brasil when:7d', 'Mercado')],
+              "ecommerce": [('e-commerce comércio eletrônico marketplaces Brasil lojistas when:7d', 'Mercado'), ('Mercado Livre Shopee Amazon lojistas vendas online Brasil when:7d', 'Tendências')],
+              "franchise": [('franquias ABF expansão franquias Brasil negócios when:7d', 'Mercado'), ('redes franquias microfranquias oportunidades Brasil when:7d', 'Oportunidades')],
+              "hr": [('recursos humanos contratação trabalho legislação empresas Brasil when:7d', 'Mercado'), ('gestão pessoas liderança emprego RH empresas Brasil when:7d', 'Ferramentas')],
+              "logistics": [('logística transporte cargas fretes entregas Brasil empresas when:7d', 'Mercado'), ('cadeia suprimentos transporte armazenagem logística Brasil when:7d', 'Tendências')],
+              "investments": [('investimentos renda fixa Tesouro Direto CDB Brasil when:7d', 'Mercado'), ('fundos investimentos mercado financeiro juros Selic Brasil when:7d', 'Tendências')],
+              "crypto": [('bitcoin criptomoedas ethereum mercado regulação Brasil when:7d', 'Mercado'), ('criptoativos bitcoin blockchain corretoras CVM Brasil when:7d', 'Tendências')],
+              "realestate": [('mercado imobiliário imóveis vendas aluguel Brasil when:7d', 'Mercado'), ('financiamento imobiliário habitação juros imóveis Brasil when:7d', 'Tendências')],
+              "agro": [('agronegócio Brasil commodities soja milho pecuária when:7d', 'Mercado'), ('agricultura produção rural exportações agro Brasil when:7d', 'Tendências')],
+              "tourism": [('turismo hotelaria viagens Brasil negócios setor when:7d', 'Mercado'), ('destinos turismo hotel restaurantes ocupação Brasil when:7d', 'Oportunidades')],
+              "education": [('educação escolas universidades mercado Brasil when:7d', 'Mercado'), ('edtech ensino tecnologia educação cursos Brasil when:7d', 'Ferramentas')],
+              "fashion": [('mercado moda vestuário varejo Brasil marcas when:7d', 'Mercado'), ('tendências moda indústria têxtil roupas Brasil when:7d', 'Tendências')],
+              "construction": [('construção civil Brasil obras setor infraestrutura when:7d', 'Mercado'), ('materiais construção habitação construção civil Brasil when:7d', 'Tendências')],
+              "industry": [('indústria Brasil produção industrial IBGE CNI when:7d', 'Mercado'), ('automação fábricas manufatura indústria inovação Brasil when:7d', 'Ferramentas')],
+              "energy": [('setor elétrico energia Brasil Aneel tarifas when:7d', 'Mercado'), ('energia solar renováveis petróleo combustíveis Brasil when:7d', 'Tendências')],
           }
-
+          
           GUIDANCE = {
               "food": (
                   "Observe se o tema interfere em custos, entregas, demanda ou concorrência na sua região. Confira a matéria antes de ajustar sua operação.",
@@ -119,24 +157,241 @@ jobs:
                   "Examine como o tema pode interessar ao público e aos serviços da sua operação de bem-estar.",
                   "Converse com sua equipe e seus clientes antes de mudar serviços ou comunicação.",
                   "Considere uma tendência potencialmente relevante para seu público."),
+              "marketing": ('Observe mudanças em canais, alcance, publicidade e comportamento do público antes de ajustar campanhas.', 'Confira o custo por cliente e experimente uma mudança pequena com metas claras.', 'Uma tendência que pode influenciar a divulgação da sua marca.'),
+              "sales": ('Avalie se a notícia afeta a demanda, o relacionamento comercial ou o processo de vendas da sua empresa.', 'Compare conversão, ticket e margem antes de modificar sua abordagem comercial.', 'Uma possível ideia para aperfeiçoar o processo comercial.'),
+              "stocks": ('Compare o contexto da notícia com índices como o Ibovespa, resultados corporativos e riscos do mercado; não é sinal de compra ou venda.', 'Leia a fonte original e consulte dados oficiais da B3 antes de tirar conclusões. Este conteúdo não é recomendação de investimento.', 'Entenda um possível movimento do mercado de ações, sem interpretar como previsão.'),
+              "dollar": ('Variações no câmbio podem afetar insumos, importações, viagens e preços; manchetes não representam cotação ao vivo.', 'Se opera com moeda estrangeira, confira a cotação atual em fonte oficial e avalie os custos reais antes de agir.', 'Acompanhe fatores que podem influenciar o dólar, sem promessa de direção da cotação.'),
+              "economy": ('Juros, Selic, IPCA, atividade econômica e Ibovespa podem influenciar crédito, custos e consumo.', 'Verifique os números oficiais e avalie cenários para seu caixa antes de tomar decisões financeiras.', 'Acompanhe indicadores econômicos relevantes, sem tratar manchetes como previsões.'),
+              "entrepreneur": ('Considere mudanças de regras, crédito, gestão e oportunidades que possam afetar pequenos negócios.', 'Compare a oportunidade com o tamanho, os recursos e as prioridades da sua empresa.', 'Uma possibilidade para aprender ou aprimorar sua operação.'),
+              "ecommerce": ('Avalie taxas, logística, comportamento do consumidor e concorrência em marketplaces.', 'Teste alterações em anúncios ou catálogo e acompanhe margem e conversão.', 'Uma mudança que pode afetar vendas digitais.'),
+              "franchise": ('Analise custos, território, desempenho e regras antes de considerar uma franquia ou expansão.', 'Leia os documentos oficiais e compare investimentos e riscos com seu plano de negócio.', 'Uma notícia de expansão ou mudanças no setor de franquias.'),
+              "hr": ('Observe impactos em contratação, treinamento, relações de trabalho e produtividade.', 'Consulte a norma original quando houver questões trabalhistas e converse com um profissional habilitado.', 'Um tema para planejar gestão de pessoas com mais informação.'),
+              "logistics": ('Custos de transporte, prazos e tecnologia podem influenciar entregas e cadeia de abastecimento.', 'Compare fretes, prazos e perdas reais da sua operação antes de mudar fornecedores.', 'Possíveis reflexos em entrega e distribuição.'),
+              "investments": ('Notícias sobre produtos financeiros exigem avaliação de risco, prazo, liquidez e adequação; não são recomendações.', 'Consulte fontes oficiais e, quando necessário, um profissional habilitado antes de aplicar recursos.', 'Informação para acompanhar o cenário, não para indicar operações.'),
+              "crypto": ('Ativos digitais são voláteis e sujeitos a mudanças regulatórias e de segurança.', 'Verifique informações em fontes confiáveis e não tome decisões de investimento com base apenas nesta manchete.', 'Contexto informativo de um mercado de alto risco.'),
+              "realestate": ('Veja se o tema muda demanda, valores, juros, oferta ou viabilidade imobiliária da sua região.', 'Compare dados de mercado locais e condições de financiamento antes de decidir.', 'Uma possível tendência a acompanhar no setor imobiliário.'),
+              "agro": ('Observe os efeitos potenciais sobre clima, oferta, preços, logística e exportações.', 'Relacione a notícia com dados regionais de produção e custos antes de planejar compras ou vendas.', 'Uma mudança potencial nos negócios do agro.'),
+              "tourism": ('Avalie sazonalidade, deslocamentos, demanda, ocupação e eventos regionais.', 'Consulte reservas e indicadores locais antes de dimensionar preços ou equipe.', 'Uma possível oportunidade a explorar no turismo.'),
+              "education": ('Analise impactos em escolas, cursos, tecnologias e necessidades de alunos.', 'Verifique regras e evidências antes de mudar propostas pedagógicas ou serviços.', 'Uma tendência que pode interessar a negócios de educação.'),
+              "fashion": ('Observe comportamento de compra, oferta, margens e tendências do varejo de moda.', 'Compare a novidade com a venda real de sua coleção e evite compras sem testar a demanda.', 'Uma pauta para acompanhar produtos e preferências do público.'),
+              "construction": ('Mudanças em juros, obras e materiais podem afetar orçamento, demanda e prazos.', 'Consulte preços locais de insumos e contratos antes de ajustar custos ou cronogramas.', 'Uma informação para acompanhar o setor de construção.'),
+              "industry": ('Avalie impactos em produção, matérias-primas, energia, demanda e automação.', 'Cheque indicadores oficiais e calcule a viabilidade operacional antes de investir em tecnologia.', 'Uma novidade que pode influenciar decisões industriais.'),
+              "energy": ('Tarifas, combustíveis, regulações e transição energética podem mudar custos de empresas.', 'Confira as regras e os valores oficiais antes de projetar economia ou investimento em energia.', 'Um tema para acompanhar custos e mudanças no setor energético.'),
           }
-
-
+          
+          
           def clean_spaces(value: str) -> str:
               return re.sub(r"\s+", " ", value or "").strip()
-
-
+          
+          
           def normalized(value: str) -> str:
               folded = unicodedata.normalize("NFKD", value)
               return re.sub(r"[^a-z0-9]+", "-", "".join(c for c in folded if not unicodedata.combining(c)).lower()).strip("-")
-
-
+          
+          
           def rss_url(q: str) -> str:
               return "https://news.google.com/rss/search?" + urlencode(
                   {"q": q, "hl": "pt-BR", "gl": "BR", "ceid": "BR:pt"}
               )
-
-
+          
+          
+          
+          def usable_image(url: str) -> bool:
+              """Só fotos HTTPS externas; recusa ícones, URLs internas e imagens do próprio Google Notícias."""
+              if not isinstance(url, str) or len(url) > 1900 or not url.startswith("https://"):
+                  return False
+              try:
+                  u = urlparse(url)
+                  host = (u.hostname or "").lower()
+                  if not host or host in {"localhost", "news.google.com"} or host.endswith((".local", ".internal", ".localhost")):
+                      return False
+                  try:
+                      ipaddress.ip_address(host)
+                      return False  # Não aceitar IP direto de terceiros como imagem.
+                  except ValueError:
+                      pass
+                  if any(word in u.path.lower() for word in ("favicon", "site-logo", "placeholder", "default-avatar", "pixel.gif")):
+                      return False
+                  return True
+              except ValueError:
+                  return False
+          
+          
+          def safe_publisher_url(value: str) -> bool:
+              """Restringe resolução a URLs HTTPS de domínios públicos."""
+              return usable_image(value) and not urlparse(value).hostname.lower().endswith((".example", ".invalid", ".test"))
+          
+          
+          def rss_image(item: ET.Element) -> str | None:
+              """Detecta mídia ligada ao próprio item (media:thumbnail, enclosure ou img no conteúdo)."""
+              for tag in item.iter():
+                  local = tag.tag.rsplit('}', 1)[-1].lower()
+                  if local in {"thumbnail", "content", "enclosure"}:
+                      link = tag.get('url') or tag.get('href') or ''
+                      typ = (tag.get('type') or '').lower()
+                      if local == "content" and typ and not typ.startswith("image/"):
+                          continue
+                      if local == "enclosure" and not (typ.startswith("image/") or link.lower().split('?')[0].endswith(('.jpg','.jpeg','.png','.webp'))):
+                          continue
+                      if usable_image(link):
+                          return link
+              for label in ('description', 'content:encoded'):
+                  content = item.findtext(label) or ''
+                  match = re.search(r'<img[^>]+?src=[\"\']([^\"\']+)', html.unescape(content), re.I)
+                  if match:
+                      link = html.unescape(match.group(1))
+                      if usable_image(link):
+                          return link
+              return None
+          
+          
+          class SocialImageParser(HTMLParser):
+              """Lê só metadados de capa editorial, sem baixar imagens ou parsear o artigo."""
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.candidates = {}
+          
+              def handle_starttag(self, tag, attrs):
+                  a = dict(attrs)
+                  if tag == "meta":
+                      name = (a.get('property') or a.get('name') or a.get('itemprop') or '').strip().lower()
+                      if name in {'og:image', 'og:image:url', 'twitter:image', 'twitter:image:src', 'image'}:
+                          self.candidates.setdefault(name, a.get('content', '').strip())
+                  if tag == 'link' and 'image_src' in (a.get('rel') or '').lower():
+                      self.candidates.setdefault('image_src', a.get('href', '').strip())
+          
+          
+          def original_google_url(url: str) -> str | None:
+              """Tenta resolver o endereço editorial: a API não documentada pode parar de funcionar."""
+              parsed = urlparse(url)
+              if parsed.hostname not in ('news.google.com', 'www.news.google.com'):
+                  return url if safe_publisher_url(url) else None
+              if NEWS_BREAKER.is_set():
+                  return None
+              match = re.search(r'/articles/([A-Za-z0-9_-]{12,})', parsed.path)
+              if not match:
+                  return None
+              article_id = match.group(1)
+              # Formato legado, offline: não precisa consultar o servidor do Google.
+              try:
+                  raw = base64.urlsafe_b64decode(article_id + '=' * (-len(article_id) % 4))
+                  hit = re.search(rb'https://[^\x00-\x20\x22<>]+', raw)
+                  if hit:
+                      candidate = hit.group(0).decode('utf-8').rstrip('\x01\x02')
+                      if safe_publisher_url(candidate):
+                          return candidate
+              except (ValueError, UnicodeDecodeError):
+                  pass
+              try:
+                  page_url = f'https://news.google.com/rss/articles/{article_id}?hl=pt-BR&gl=BR&ceid=BR:pt'
+                  request = Request(page_url, headers={**REQUEST_HEADERS, 'Cookie':'CONSENT=PENDING+987'})
+                  with urlopen(request, timeout=IMAGE_TIMEOUT) as resp:
+                      if resp.url and urlparse(resp.url).hostname not in ('news.google.com', 'www.news.google.com'):
+                          return resp.url if safe_publisher_url(resp.url) else None
+                      source = resp.read(IMAGE_SCAN_BYTES).decode('utf-8', 'replace')
+                  sg = re.search(r'data-n-a-sg=[\"\']([^\"\']+)', source)
+                  ts = re.search(r'data-n-a-ts=[\"\'](\d+)', source)
+                  if not sg or not ts:
+                      return None
+                  inner = [
+                      'garturlreq',
+                      [['X','X',['X','X'],None,None,1,1,'BR:pt',None,1,None,None,None,None,None,0,1],
+                       'X','X',1,[1,1,1],1,1,None,0,0,None,0],
+                      article_id, int(ts.group(1)), html.unescape(sg.group(1)),
+                  ]
+                  body = urlencode({'f.req':json.dumps([[['Fbv4je', json.dumps(inner, ensure_ascii=False, separators=(',',':'))]]], separators=(',',':'))}).encode('utf-8')
+                  req = Request('https://news.google.com/_/DotsSplashUi/data/batchexecute', data=body, headers={
+                      **REQUEST_HEADERS,
+                      'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8',
+                      'Origin':'https://news.google.com',
+                      'Referer':'https://news.google.com/',
+                      'X-Same-Domain':'1',
+                      'Cookie':'CONSENT=PENDING+987',
+                  })
+                  with urlopen(req, timeout=IMAGE_TIMEOUT) as resp:
+                      response = resp.read(180_000).decode('utf-8','replace')
+                  payload = response.split('\n\n',1)[-1]
+                  frames = json.loads(payload)
+                  for frame in frames:
+                      if isinstance(frame,list) and len(frame)>2 and frame[0]=='wrb.fr' and frame[1]=='Fbv4je' and frame[2]:
+                          result = json.loads(frame[2])
+                          if isinstance(result,list) and len(result)>1 and result[0]=='garturlres' and safe_publisher_url(result[1]):
+                              return result[1]
+              except HTTPError as exc:
+                  if exc.code == 429:
+                      NEWS_BREAKER.set()
+                  return None
+              except (OSError, ValueError, TypeError, IndexError, json.JSONDecodeError):
+                  return None
+              return None
+          
+          
+          def publisher_image(source_url: str) -> str | None:
+              """Consulta apenas a página editorial e extrai Open Graph / Twitter Cards."""
+              if not safe_publisher_url(source_url):
+                  return None
+              try:
+                  request = Request(source_url, headers={**REQUEST_HEADERS, 'Accept':'text/html,application/xhtml+xml'})
+                  with urlopen(request, timeout=IMAGE_TIMEOUT) as resp:
+                      final_url = resp.url
+                      ctype = resp.headers.get('Content-Type','').lower()
+                      if not safe_publisher_url(final_url) or ('text/html' not in ctype and 'application/xhtml+xml' not in ctype):
+                          return None
+                      markup = resp.read(IMAGE_SCAN_BYTES).decode('utf-8','replace')
+                  parser = SocialImageParser()
+                  parser.feed(markup)
+                  for key in ('og:image', 'og:image:url', 'twitter:image', 'twitter:image:src', 'image', 'image_src'):
+                      if parser.candidates.get(key):
+                          image = urljoin(final_url, html.unescape(parser.candidates[key]).strip())
+                          if usable_image(image):
+                              return image
+              except (HTTPError, URLError, TimeoutError, OSError, ValueError):
+                  pass
+              return None
+          
+          
+          def add_article_image(article: dict) -> str | None:
+              """Extrai foto da matéria; nunca substitui pela logo genérica do agregador."""
+              if usable_image(article.get('image') or ''):
+                  return article['image']
+              source = original_google_url(article['url'])
+              if not source:
+                  return None
+              return publisher_image(source)
+          
+          
+          def enrich_with_images(articles: list[dict], previous_articles: list[dict]) -> int:
+              """Reaproveita capas anteriores e limita coleta paralela a 5 artigos por nicho."""
+              existing = {a.get('id'): a.get('image') for a in previous_articles if isinstance(a, dict) and usable_image(a.get('image') or '')}
+              todo = []
+              quota = {}
+              for article in articles:
+                  if usable_image(article.get('image') or ''):
+                      continue
+                  known = existing.get(article.get('id'))
+                  if known:
+                      article['image'] = known
+                      continue
+                  niche = article.get('n', 'food')
+                  if quota.get(niche, 0) < MAX_NEW_IMAGES_PER_NICHE:
+                      quota[niche] = quota.get(niche, 0) + 1
+                      todo.append(article)
+              count = 0
+              if not todo:
+                  return 0
+              with ThreadPoolExecutor(max_workers=IMAGE_WORKERS) as executor:
+                  jobs = {executor.submit(add_article_image, a): a for a in todo}
+                  for task in as_completed(jobs):
+                      try:
+                          url = task.result()
+                          if url and usable_image(url):
+                              jobs[task]['image'] = url
+                              count += 1
+                      except Exception:
+                          pass
+              return count
+          
+          
           def parse_feed(xml_bytes: bytes, niche: str, category: str) -> list[dict]:
               root = ET.fromstring(xml_bytes)
               results = []
@@ -177,10 +432,11 @@ jobs:
                       "publishedAt": date.isoformat(timespec="seconds"),
                       "url": href,
                       "auto": True,
+                      **({"image": rss_image(entry)} if rss_image(entry) else {}),
                   })
               return results
-
-
+          
+          
           def fetch_items(niche: str, query: str, category: str) -> list[dict]:
               req = Request(rss_url(query), headers={
                   "User-Agent": "Mozilla/5.0 (compatible; RadarEmpreendedor/3.0; RSS reader)",
@@ -189,16 +445,16 @@ jobs:
               with urlopen(req, timeout=15) as reply:
                   data = reply.read(1_500_000)
               return parse_feed(data, niche, category)
-
-
+          
+          
           def old_feed() -> dict:
               try:
                   old = json.loads(OUTPUT.read_text(encoding="utf-8"))
                   return old if isinstance(old, dict) and isinstance(old.get("articles"), list) else {}
               except (OSError, ValueError):
                   return {}
-
-
+          
+          
           def build_news(fetcher=fetch_items, base: dict | None = None, now: datetime | None = None) -> tuple[dict, dict]:
               previous = base if base is not None else old_feed()
               now = now or datetime.now(UTC)
@@ -234,16 +490,18 @@ jobs:
               # Preserve editorial material when all external feeds are unavailable.
               if not any_success:
                   return previous, {"allSourcesFailed": True, "niches": report}
+              new_images = enrich_with_images(article_pool, previous.get('articles', []))
+              print(f"Fotos descobertas nesta edição: {new_images} / {len(article_pool)} matérias. Sem imagem, o visual padrão será mantido.")
               return {
-                  "version": 3,
+                  "version": 4,
                   "revision": int(previous.get("revision", 0)) + 1,
                   "checkedAt": now.isoformat(timespec="seconds"),
                   "nicheCheckedAt": niche_dates,
                   "mode": "scheduled-rss",
                   "articles": article_pool,
               }, {"allSourcesFailed": False, "niches": report}
-
-
+          
+          
           def main() -> int:
               new_feed, report = build_news()
               print(json.dumps(report, ensure_ascii=False, indent=2))
@@ -256,11 +514,10 @@ jobs:
               temp.replace(OUTPUT)
               print(f"Feed gerado: {len(new_feed['articles'])} notícias, edição {new_feed['revision']}.")
               return 0
-
-
+          
+          
           if __name__ == "__main__":
               raise SystemExit(main())
-
           RADAR_SCRIPT
           if [ ! -f data/noticias.json ]; then
             cat > data/noticias.json <<'RADAR_EDICAO'
@@ -318,7 +575,7 @@ jobs:
           RADAR_EDICAO
           fi
 
-      - name: Consultar noticias dos seis nichos
+      - name: Consultar noticias e fotos dos 26 nichos
         shell: bash
         run: |
           if ! python scripts/atualizar_noticias.py; then
