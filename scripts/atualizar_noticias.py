@@ -36,8 +36,14 @@ MAX_AGE_DAYS = 21
 MAX_NEW_IMAGES_PER_NICHE = 5
 IMAGE_WORKERS = 4
 IMAGE_TIMEOUT = 6
-IMAGE_SCAN_BYTES = 420_000
+IMAGE_SCAN_BYTES = 1_000_000
 NEWS_BREAKER = threading.Event()
+IMAGE_STATS = {'resolved': 0, 'unresolved': 0, 'publisher_has_image': 0, 'publisher_no_image': 0}
+IMAGE_STATS_LOCK = threading.Lock()
+
+def mark_image_stat(key: str) -> None:
+    with IMAGE_STATS_LOCK:
+        IMAGE_STATS[key] += 1
 REQUEST_HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
     "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.7",
@@ -244,7 +250,7 @@ def original_google_url(url: str) -> str | None:
         pass
     try:
         page_url = f'https://news.google.com/rss/articles/{article_id}?hl=pt-BR&gl=BR&ceid=BR:pt'
-        request = Request(page_url, headers={**REQUEST_HEADERS, 'Cookie':'CONSENT=PENDING+987'})
+        request = Request(page_url, headers={**REQUEST_HEADERS, 'Cookie':'CONSENT=YES+cb; SOCS=CAI'})
         with urlopen(request, timeout=IMAGE_TIMEOUT) as resp:
             if resp.url and urlparse(resp.url).hostname not in ('news.google.com', 'www.news.google.com'):
                 return resp.url if safe_publisher_url(resp.url) else None
@@ -259,14 +265,20 @@ def original_google_url(url: str) -> str | None:
              'X','X',1,[1,1,1],1,1,None,0,0,None,0],
             article_id, int(ts.group(1)), html.unescape(sg.group(1)),
         ]
-        body = urlencode({'f.req':json.dumps([[['Fbv4je', json.dumps(inner, ensure_ascii=False, separators=(',',':'))]]], separators=(',',':'))}).encode('utf-8')
-        req = Request('https://news.google.com/_/DotsSplashUi/data/batchexecute', data=body, headers={
+        # Google News usa um RPC interno para resolver a URL do jornal.
+        # O quarto campo ("generic") e o parâmetro rpcids são necessários.
+        # Esse endpoint não é público/documentado e pode mudar.
+        inner_json = json.dumps(inner, ensure_ascii=False, separators=(',', ':'))
+        body = urlencode({'f.req': json.dumps(
+            [[['Fbv4je', inner_json, None, 'generic']]],
+            ensure_ascii=False, separators=(',', ':'))}).encode('utf-8')
+        req = Request('https://news.google.com/_/DotsSplashUi/data/batchexecute?rpcids=Fbv4je', data=body, headers={
             **REQUEST_HEADERS,
-            'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8',
-            'Origin':'https://news.google.com',
-            'Referer':'https://news.google.com/',
-            'X-Same-Domain':'1',
-            'Cookie':'CONSENT=PENDING+987',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            'Origin': 'https://news.google.com',
+            'Referer': 'https://news.google.com/',
+            'X-Same-Domain': '1',
+            'Cookie': 'CONSENT=YES+cb; SOCS=CAI',
         })
         with urlopen(req, timeout=IMAGE_TIMEOUT) as resp:
             response = resp.read(180_000).decode('utf-8','replace')
@@ -316,8 +328,12 @@ def add_article_image(article: dict) -> str | None:
         return article['image']
     source = original_google_url(article['url'])
     if not source:
+        mark_image_stat('unresolved')
         return None
-    return publisher_image(source)
+    mark_image_stat('resolved')
+    result = publisher_image(source)
+    mark_image_stat('publisher_has_image' if result else 'publisher_no_image')
+    return result
 
 
 def enrich_with_images(articles: list[dict], previous_articles: list[dict]) -> int:
@@ -452,6 +468,7 @@ def build_news(fetcher=fetch_items, base: dict | None = None, now: datetime | No
         return previous, {"allSourcesFailed": True, "niches": report}
     new_images = enrich_with_images(article_pool, previous.get('articles', []))
     print(f"Fotos descobertas nesta edição: {new_images} / {len(article_pool)} matérias. Sem imagem, o visual padrão será mantido.")
+    print('Diagnóstico do coletor de fotos:', json.dumps(IMAGE_STATS, ensure_ascii=False))
     return {
         "version": 4,
         "revision": int(previous.get("revision", 0)) + 1,
