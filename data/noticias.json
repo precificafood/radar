@@ -1,34 +1,34 @@
 {
   "version": 4,
-  "revision": 8,
-  "checkedAt": "2026-10-17T00:07:04+00:00",
+  "revision": 9,
+  "checkedAt": "2026-10-17T00:31:26+00:00",
   "nicheCheckedAt": {
-    "food": "2026-10-17T00:07:04+00:00",
-    "beauty": "2026-10-17T00:07:04+00:00",
-    "car": "2026-10-17T00:07:04+00:00",
-    "shop": "2026-10-17T00:07:04+00:00",
-    "tech": "2026-10-17T00:07:04+00:00",
-    "health": "2026-10-17T00:07:04+00:00",
-    "marketing": "2026-10-17T00:07:04+00:00",
-    "sales": "2026-10-17T00:07:04+00:00",
-    "stocks": "2026-10-17T00:07:04+00:00",
-    "dollar": "2026-10-17T00:07:04+00:00",
-    "economy": "2026-10-17T00:07:04+00:00",
-    "entrepreneur": "2026-10-17T00:07:04+00:00",
-    "ecommerce": "2026-10-17T00:07:04+00:00",
-    "franchise": "2026-10-17T00:07:04+00:00",
-    "hr": "2026-10-17T00:07:04+00:00",
-    "logistics": "2026-10-17T00:07:04+00:00",
-    "investments": "2026-10-17T00:07:04+00:00",
-    "crypto": "2026-10-17T00:07:04+00:00",
-    "realestate": "2026-10-17T00:07:04+00:00",
-    "agro": "2026-10-17T00:07:04+00:00",
-    "tourism": "2026-10-17T00:07:04+00:00",
-    "education": "2026-10-17T00:07:04+00:00",
-    "fashion": "2026-10-17T00:07:04+00:00",
-    "construction": "2026-10-17T00:07:04+00:00",
-    "industry": "2026-10-17T00:07:04+00:00",
-    "energy": "2026-10-17T00:07:04+00:00"
+    "food": "2026-10-17T00:31:26+00:00",
+    "beauty": "2026-10-17T00:31:26+00:00",
+    "car": "2026-10-17T00:31:26+00:00",
+    "shop": "2026-10-17T00:31:26+00:00",
+    "tech": "2026-10-17T00:31:26+00:00",
+    "health": "2026-10-17T00:31:26+00:00",
+    "marketing": "2026-10-17T00:31:26+00:00",
+    "sales": "2026-10-17T00:31:26+00:00",
+    "stocks": "2026-10-17T00:31:26+00:00",
+    "dollar": "2026-10-17T00:31:26+00:00",
+    "economy": "2026-10-17T00:31:26+00:00",
+    "entrepreneur": "2026-10-17T00:31:26+00:00",
+    "ecommerce": "2026-10-17T00:31:26+00:00",
+    "franchise": "2026-10-17T00:31:26+00:00",
+    "hr": "2026-10-17T00:31:26+00:00",
+    "logistics": "2026-10-17T00:31:26+00:00",
+    "investments": "2026-10-17T00:31:26+00:00",
+    "crypto": "2026-10-17T00:31:26+00:00",
+    "realestate": "2026-10-17T00:31:26+00:00",
+    "agro": "2026-10-17T00:31:26+00:00",
+    "tourism": "2026-10-17T00:31:26+00:00",
+    "education": "2026-10-17T00:31:26+00:00",
+    "fashion": "2026-10-17T00:31:26+00:00",
+    "construction": "2026-10-17T00:31:26+00:00",
+    "industry": "2026-10-17T00:31:26+00:00",
+    "energy": "2026-10-17T00:31:26+00:00"
   },
   "mode": "scheduled-rss",
   "articles": [
@@ -72,20 +72,6 @@
       "source": "al1.com.br",
       "publishedAt": "2026-10-16T15:56:36+00:00",
       "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQRlVvN2tIZXZNLUVjS183d3Yxd0Y0S1E1T3NSS2RBS2hWZ1pwcTRkeGlQRklyQ2VzbDZ3VlhUV3h0SUN4YlBhRGVlRG1PUVNKT1V2b3FySTIzWG5JNTlqc2ZrbHNTTEVoX003bTMwblhmbWtXYzhQd21YekVxUDBVMngweVV2Q25Ra2dIekIyR0FnSC1IUzNTQklXZG1FdUpUQ2dwTzdVSDM5QXdLVlkteXVZcFVlLThKalZwRExOSjMybEhxdUtBUFlnTjJKRExRQjNZNW93?oc=5",
-      "auto": true
-    },
-    {
-      "id": "rss-food-148445afb3cd3e5a0bd2764f",
-      "n": "food",
-      "title": "Maior feira de hotelaria e alimentação do Nordeste abre credenciamento e será realizada no mês de novembro",
-      "summary": "Manchete divulgada por Fique Sabendo PE. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
-      "why": "Observe se o tema interfere em custos, entregas, demanda ou concorrência na sua região. Confira a matéria antes de ajustar sua operação.",
-      "action": "Compare essa novidade com seus números de vendas, custos e canais de delivery antes de tomar uma decisão.",
-      "impact": "Avalie uma possível consequência para sua operação de alimentação.",
-      "type": "Mercado",
-      "source": "Fique Sabendo PE",
-      "publishedAt": "2026-10-15T18:00:00+00:00",
-      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNdnY2Q2NRTF8tNnN1UTRXWlZac1lWZHFhczFSNW53S3Y2Z0VZbGo5aE1mQ2tBQTNBU29mbmpJSEthb2VjY0hIM3ZtT05JY2NHWVJZdzNHRkpScWRaQUo1RTFFUEtMeERnZkxBNmN5dE4tOEF5cUdlcUxnMFhEU29USDBoU0gxNWptSmRyWURqWkRXQ0l1T1EzaXotanFrMXF4cENWSW1FYjNtMVdPTTdpazJYczZuakJManpHTEtpcUI0Z3p4TnE0TFhwdWJjaTQ?oc=5",
       "auto": true
     },
     {
@@ -1321,20 +1307,6 @@
       "auto": true
     },
     {
-      "id": "rss-stocks-d41344deed5cdf4873cb3575",
-      "n": "stocks",
-      "title": "Ibovespa volta a subir, após três quedas, mas semana termina no negativo; Dólar cai",
-      "summary": "Manchete divulgada por InfoMoney. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
-      "why": "Compare o contexto da notícia com índices como o Ibovespa, resultados corporativos e riscos do mercado; não é sinal de compra ou venda.",
-      "action": "Leia a fonte original e consulte dados oficiais da B3 antes de tirar conclusões. Este conteúdo não é recomendação de investimento.",
-      "impact": "Entenda um possível movimento do mercado de ações, sem interpretar como previsão.",
-      "type": "Tendências",
-      "source": "InfoMoney",
-      "publishedAt": "2026-10-16T20:29:41+00:00",
-      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNbXFmQ2c5SUh3UDByVUlmQ1JnVkJHSU9DM29pVGJmaVVZQTJibFNQZlJHMFFOYWZiZ1UwUDRMdjV2RENKMUVpZFU4X1VwckNxT3ZBM3ZlU0RydVRneFNMeDNOeWtaOHJvaGVBdm1fMll6dGZGc3dnOFQ5djFUdHlSZWthVFc1Y2ZVMmdPdGY2OA?oc=5",
-      "auto": true
-    },
-    {
       "id": "rss-stocks-089973af611350c874248a57",
       "n": "stocks",
       "title": "BBAS3 - Banco Do Brasil - Resultados, Dividendos, Cotação e Indicadores",
@@ -1416,6 +1388,20 @@
       "source": "CNN Brasil",
       "publishedAt": "2026-10-16T07:05:15+00:00",
       "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNVEtvaDllMC1oLXZBaEJuNHBpbGZFQUtPMGt4MVRtZU96dnBGLTNLaU1Ydk5QWThYWnFOSFN2UThJcE1GTElscjNSUUh6bUFwemM2YXEtSGpnSUd4Q1Ftdmk0ekQycnlscEJuZ1dUdUdrYS1UYldSajg0dzkxZHBMakpXUkpmSE9HTXZSMVRxUWlWbjlILXJZN0hobnpQSzh2VVBFMkRUSkVVYjVidUo0UUctOC1rNWZ4TVlhUF9MS1FfdW8?oc=5",
+      "auto": true
+    },
+    {
+      "id": "rss-stocks-72988aa30bd39daae7b81012",
+      "n": "stocks",
+      "title": "Com eleição mais apertada, Ibovespa cai pelo terceiro dia e dólar chega a R$ 5,08",
+      "summary": "Manchete divulgada por brazileconomy.com.br. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
+      "why": "Compare o contexto da notícia com índices como o Ibovespa, resultados corporativos e riscos do mercado; não é sinal de compra ou venda.",
+      "action": "Leia a fonte original e consulte dados oficiais da B3 antes de tirar conclusões. Este conteúdo não é recomendação de investimento.",
+      "impact": "Entenda um possível movimento do mercado de ações, sem interpretar como previsão.",
+      "type": "Tendências",
+      "source": "brazileconomy.com.br",
+      "publishedAt": "2026-10-16T02:58:46+00:00",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNeExFV2NWbFdhVjFEWk84aE05YmdxcmZZcndPNEoyU0taT0dtSjUzWWRWSUlCYUFmT3hIcHQ4djdRZUx5MnJ6WGlhdWtlV21uSXk2ZGMwdmVlQWdCcXJ0YjJFb0xjbVZJbXVxbF9qSW1XU3lsYWQxX0EyRVEwRmd1QVNPVFZoSzZfNkZUSWNuSmlpMHlrWVZFQ1BCbTJHLUJOVDQ2aFRrNnZHUldKSWFDZ3JoNXVHS1dsLWZkT09YQVRnUzNaMnFV?oc=5",
       "auto": true
     },
     {
@@ -1615,6 +1601,20 @@
       "auto": true
     },
     {
+      "id": "rss-economy-d2c3111426d3a266c65ea128",
+      "n": "economy",
+      "title": "Fechamento de mercado: dólar cai e Bolsa sobe após sequência de quedas",
+      "summary": "Manchete divulgada por Gazeta Brasil. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
+      "why": "Juros, Selic, IPCA, atividade econômica e Ibovespa podem influenciar crédito, custos e consumo.",
+      "action": "Verifique os números oficiais e avalie cenários para seu caixa antes de tomar decisões financeiras.",
+      "impact": "Acompanhe indicadores econômicos relevantes, sem tratar manchetes como previsões.",
+      "type": "Tendências",
+      "source": "Gazeta Brasil",
+      "publishedAt": "2026-10-16T21:53:58+00:00",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOdmYzRUktVlAzM0tla0wtYldidzhMN3V2cm1iWG41Z1U0MV9uSmgzMlQtUEQwWVUxRVlqVmFjM0pjX1J5SldVaHFQRnZBZHZka2FvbUdUa1pheGptS1dBeHZ4TF80dmZYOUJHSjktTnpsOVh1Q3JDYm53a3J1OUFhTjdhSzJwY2JRZXN2YzRnZUNSWll5aVZpMUpzNmdVSDFucEg2U2VFOWJYQmhOSkN2R1UwLUVZcHZjRm5pb2QwYUtRd9IBwgFBVV95cUxOdmYzRUktVlAzM0tla0wtYldidzhMN3V2cm1iWG41Z1U0MV9uSmgzMlQtUEQwWVUxRVlqVmFjM0pjX1J5SldVaHFQRnZBZHZka2FvbUdUa1pheGptS1dBeHZ4TF80dmZYOUJHSjktTnpsOVh1Q3JDYm53a3J1OUFhTjdhSzJwY2JRZXN2YzRnZUNSWll5aVZpMUpzNmdVSDFucEg2U2VFOWJYQmhOSkN2R1UwLUVZcHZjRm5pb2QwYUtRdw?oc=5",
+      "auto": true
+    },
+    {
       "id": "rss-economy-7e604a410ec0a7e691cf8338",
       "n": "economy",
       "title": "Dólar cai, e bolsa ronda estabilidade em semana de 'ajuste' depois de euforia eleitoral",
@@ -1766,20 +1766,6 @@
       "source": "Portal Tela",
       "publishedAt": "2026-10-13T14:23:07+00:00",
       "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNRFM3RnRvLV9BMFdYYmpNbmNvemRfOFlCdmZDY19CbHdJbDZ1dFBVWTd1VWdOZnZESkVqUm5FZWhyTmlwXzZNdkJwaVdtbXhRSk9LZUJVSW5fXzRUMTI1NWFhVUx6YUdVaFBSM0h0WEMzSk04ZEV2OEp0UlFkS2RSUVJVQmtYQzhDM1BwWUpwM3V4MGtIX3B2bjJoWU9JZzhBeEpIdG9HWW5uMDRlaDUxNVVjMlE?oc=5",
-      "auto": true
-    },
-    {
-      "id": "rss-economy-32a6ba13954d1908a1913c22",
-      "n": "economy",
-      "title": "Mercado eleva previsão da inflação para 5,22% pela quarta semana seguida",
-      "summary": "Manchete divulgada por Rádio Itatiaia. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
-      "why": "Juros, Selic, IPCA, atividade econômica e Ibovespa podem influenciar crédito, custos e consumo.",
-      "action": "Verifique os números oficiais e avalie cenários para seu caixa antes de tomar decisões financeiras.",
-      "impact": "Acompanhe indicadores econômicos relevantes, sem tratar manchetes como previsões.",
-      "type": "Mercado",
-      "source": "Rádio Itatiaia",
-      "publishedAt": "2026-10-13T12:53:15+00:00",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNZ0RvbTFmeXliUjV5ZGFUdk9WN2theThMU0pYdDBHNjFBS0xPX3REelBISW45OTRWZ2gtOWt2SnQyNndfaWRzdEVGdUt0Rll5N0lhb2tNc3M3TEJvRU4tMjBfTG04NWliVUtBX3NWNkxaU1hGS2MtOUlqdDNLR1M3bzBpSVBLWHE5cDhzcEs3RVA2aXVRaml0Q1hRd1Z3Vm0zbEM3MnNLMHUyMFJM?oc=5",
       "auto": true
     },
     {
@@ -2511,34 +2497,6 @@
       "auto": true
     },
     {
-      "id": "rss-logistics-d37d03c172a7633532ae9123",
-      "n": "logistics",
-      "title": "Com os preços globais do petróleo ainda elevados, as empresas de transporte enfrentam uma dupla pressão de custos.",
-      "summary": "Manchete divulgada por Vietnam.vn. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
-      "why": "Custos de transporte, prazos e tecnologia podem influenciar entregas e cadeia de abastecimento.",
-      "action": "Compare fretes, prazos e perdas reais da sua operação antes de mudar fornecedores.",
-      "impact": "Possíveis reflexos em entrega e distribuição.",
-      "type": "Tendências",
-      "source": "Vietnam.vn",
-      "publishedAt": "2026-10-12T07:04:46+00:00",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNTUxNOXAyRTFTZzEzVUxsVjNnMEFCVWFMVTFYQ255NVloM2oycV9vMElYbEY1NHQzQUlPWW1RTk40c0JUNDlaeFAwcWpDWlNmcXRIZEFIVGVMMERpc0lNNFExcExYSnNrNHp5a3RueWh1OG1Vem5iOEt5ODU4WjVlSm51aTN3YVpiQU42NVVQOHBNbmJIbS02UThXRQ?oc=5",
-      "auto": true
-    },
-    {
-      "id": "rss-investments-6506231e398870a78b180df2",
-      "n": "investments",
-      "title": "IFIX recua 0,41% no pregão e acumula queda de 1,22% na semana",
-      "summary": "Manchete divulgada por EuQueroInvestir. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
-      "why": "Notícias sobre produtos financeiros exigem avaliação de risco, prazo, liquidez e adequação; não são recomendações.",
-      "action": "Consulte fontes oficiais e, quando necessário, um profissional habilitado antes de aplicar recursos.",
-      "impact": "Informação para acompanhar o cenário, não para indicar operações.",
-      "type": "Tendências",
-      "source": "EuQueroInvestir",
-      "publishedAt": "2026-10-16T22:43:33+00:00",
-      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQR21tUm1mZjlhTWhBaGxuNTVLNG5Bc1BFWERkUHo0TUJxNGU1NjVBNjRfM3JJTXBydVBjQ1VLc2tRZHBwUHNaZVZ3V2ExZDJKdUdhZTFIc2pYRS1QM2xLTzdmNTBFdXdhRnFqd1U3cF9WZlJCU3FVWmloZUdtNXY1XzdMRVNWdEVxT3d6NFpHUlY1SWtBdi1GeTU2OE05YXd6ZTNLVzRZekk?oc=5",
-      "auto": true
-    },
-    {
       "id": "rss-investments-42dac775b35db7549020765c",
       "n": "investments",
       "title": "BBAS3 - Banco Do Brasil - Resultados, Dividendos, Cotação e Indicadores",
@@ -2690,6 +2648,20 @@
       "source": "Empiricus",
       "publishedAt": "2026-10-15T18:00:00+00:00",
       "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxPbmV3QmduSi1KT292UWZKbDE5WHY3cFJMcTNZOVVHeEdiUk44RDZOZzg5MWtPWEZJRHpmaHU1clF5dWZXWExZak1QcGROZG1hRDFBcUhfOTVuZGhQbDZUM3BDNlBEZnlIVm9PcURBaVdSSkluMmRmYVVoS0tZdlEzU3A3N0JNRlAyNTA2RjBZN2lMN3ZGNl9vWHVsdEVSS1BaS2RwWVNRRUdMMUlnQjVhYVc1Qmd4a1RkMjRpWlk5SXNUTktpTE5GRzVfWTdZSUdZNk1WUF9YVGYtX05LTFJRZ19mei1xZjBKRlA2TkhhWGI5aTROdWk1SDJSVkpiZlhESW4xUkZxR1RuYVAybGZCMU1LSXVEdw?oc=5",
+      "auto": true
+    },
+    {
+      "id": "rss-investments-ea431e786312ada7f2372939",
+      "n": "investments",
+      "title": "Tesouro Direto eleva taxas: Prefixado chega a 12,87% e IPCA+ alcança 6,73%",
+      "summary": "Manchete divulgada por Acionista.com.br. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
+      "why": "Notícias sobre produtos financeiros exigem avaliação de risco, prazo, liquidez e adequação; não são recomendações.",
+      "action": "Consulte fontes oficiais e, quando necessário, um profissional habilitado antes de aplicar recursos.",
+      "impact": "Informação para acompanhar o cenário, não para indicar operações.",
+      "type": "Mercado",
+      "source": "Acionista.com.br",
+      "publishedAt": "2026-10-15T16:33:22+00:00",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOM0E0c0JDdXZZY0pTQTdKZ1V5RlVnZk1JclYxVTUwTTlWaklJZEpndU9vVDJJbC1vU20yMXljZlZaelE2TUg3R3NLbkR2V0xHaW9lR0hHNm5zVFdXNkhyZW5sTXNpN0VWVWU1UElRMEZOUG1Wd18ycWo1a0hHRno4ZUNyYXBPYVUwa1RNQk12SkUwa3RoUGh0cUVB?oc=5",
       "auto": true
     },
     {
@@ -3407,20 +3379,6 @@
       "auto": true
     },
     {
-      "id": "rss-education-a2a9b9977bf2b3b1694ae15f",
-      "n": "education",
-      "title": "Flávio Bolsonaro defende escolas cívico-militares; Lula prioriza ensino integral",
-      "summary": "Manchete divulgada por Muita Informação. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
-      "why": "Analise impactos em escolas, cursos, tecnologias e necessidades de alunos.",
-      "action": "Verifique regras e evidências antes de mudar propostas pedagógicas ou serviços.",
-      "impact": "Uma tendência que pode interessar a negócios de educação.",
-      "type": "Mercado",
-      "source": "Muita Informação",
-      "publishedAt": "2026-10-15T17:40:00+00:00",
-      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNRVpkZTBVQjZEMXVlZ0FibTVZZ1RXalhWSUFibEp6SjBlZ0JaSGdET3A1NkoxZXpGNTF4bENJdl8waXBmcUVhXzR6eU1BY3cxeHAyMlh4aWY5QXF4SXp6UTJOcGhtc1pTQm95ODRZZTQ3REcySVpLa21ZVzZaYjdQUFEwalFOUVFqNDQxZEh6R3owVzRFVlYzaEdrbUNlNHRhU1FraUNiLVF6VHU3UUZkbE0xcjFWOWROeGx5aA?oc=5",
-      "auto": true
-    },
-    {
       "id": "rss-education-b703d4d9138741a043248d16",
       "n": "education",
       "title": "Flávio Bolsonaro defende escolas cívico-militares, enquanto Lula promete ampliar ensino integral",
@@ -3432,6 +3390,20 @@
       "source": "Jornal Hora Extra",
       "publishedAt": "2026-10-15T14:36:27+00:00",
       "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPVi1NQ04xdENrRjE5V1JsanJiSHFuaTcyTG5RR0RUSmJFMTNsV3YyOTNjaVZFNGtUZk9vczlfLVRsRHIxYWJFZmV5NzlyMU9jM2tkNzZwY0JLZjhlNEFtSGFqdW5PV2h1cXkydGlHRnVBU0ZvWkd0LWx2YU5LQmRxcjVYa2twVzV5N0pGb2VmWlNzVktwMTNqMG5OUldDemNpNVZKRXVpTmFIVVU5cXpQejdlb01yR1ZoZW0ybkZZWGJHNEN1V0RDdnNJUExfYVZZTHVyXzVR?oc=5",
+      "auto": true
+    },
+    {
+      "id": "rss-education-dcba0f6b6b321c8de33d55d3",
+      "n": "education",
+      "title": "Propostas de Lula e Flávio Bolsonaro para a educação",
+      "summary": "Manchete divulgada por Voz da Bahia. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
+      "why": "Analise impactos em escolas, cursos, tecnologias e necessidades de alunos.",
+      "action": "Verifique regras e evidências antes de mudar propostas pedagógicas ou serviços.",
+      "impact": "Uma tendência que pode interessar a negócios de educação.",
+      "type": "Mercado",
+      "source": "Voz da Bahia",
+      "publishedAt": "2026-10-15T13:41:00+00:00",
+      "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxNbUx6Y3RuX0NwSkdEX0lONVU1UDc1OFprZEh1SlBpSUxVT28xNml6UjdTM1B5Zmk5Z2VkYlI4QzdlcXJ3T2FnUzFvNDdORDJDSUE5WFowUVNUcW1oRXd4RXZveW4zVFk0RWthbHQ3UkVycWM3WThuUU9sM3RpbEZPMlVaaGlZQlAtTWh0N0U4bXNld1U4SkR2Ml9lNUp6cm1TNEV4N1Q1YWZwUEVzc1lMQmFwNTVudHgwSEh6OUtkaUcwbmtVTmVYckNTUjZ4Ny03MzFfRjBHejFZYnpWYzd1MF9KdWd5RnVGVEoyNGY5Nms5Q0RTQ3dURUxveXA?oc=5",
       "auto": true
     },
     {
@@ -3838,6 +3810,20 @@
       "source": "Coluna do Meio",
       "publishedAt": "2026-10-16T10:58:00+00:00",
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNSUFNSjEtZTZVTjN1QVNHT3Z0MHFDOEluMU93WnR6dlB6bGZZTDZKOE1JLVc3SG1ESXJWVEVoS2xiRTVhOTlFUkh1NXQ3T25oVmc2VnFNN1NUU29WWmRaNU8tUGdPTEx6N0FEZlY4ZVVhc1BYcXdJTHRlczdkdFpuNm5LODRUMGpKemdEem03ZjVTRlhTZlg3M1hwYUh1OTNxeXlhanlYM3FXb0EtVnFQSXZwQm5oek14UTdNUA?oc=5",
+      "auto": true
+    },
+    {
+      "id": "rss-industry-d14b127ed3677b847f4990f3",
+      "n": "industry",
+      "title": "Mercado de scanners 3D até 2035: automação industrial e gêmeos digitais impulsionam o crescimento - Notícias e Estatísticas",
+      "summary": "Manchete divulgada por IndexBox. Abra a publicação original para conferir os detalhes e a contextualização da notícia.",
+      "why": "Avalie impactos em produção, matérias-primas, energia, demanda e automação.",
+      "action": "Cheque indicadores oficiais e calcule a viabilidade operacional antes de investir em tecnologia.",
+      "impact": "Uma novidade que pode influenciar decisões industriais.",
+      "type": "Ferramentas",
+      "source": "IndexBox",
+      "publishedAt": "2026-10-17T00:11:04+00:00",
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQckJTOUFJSEJkRlpSYTVfRkNUa0paNllFeGxZVkxxOHFUcE4tMER1eTVCY09KeV9kalRFNkt6ZlBhNVVFSnpQS1JFMU9aNHljTURSeEpmblY2b05CZm9qd3h4QmhobVA4UC1KZ3N0VjV4aG9mdXUxQnpkbklvRjRmVmVNVXF1MVNHWmZjQ1FsS0UxRmhjY3Y5eDVHQTREVVBmM0Z2bWZfRmdYdE9URGxLVnJWam9UZlZMSDNrVlQtS1pUZzNwejZPcHlCckdVbUc2?oc=5",
       "auto": true
     },
     {
